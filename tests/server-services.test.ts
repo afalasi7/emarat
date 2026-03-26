@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   getSessionUser,
   signIn,
+  signUp,
   signOut,
   updateReminder,
   updateSettings,
@@ -76,5 +77,20 @@ describe.sequential("server services", () => {
     expect(written.sessions).toHaveLength(1);
     expect(written.sessions[0]?.userId).toBe("user-demo");
     expect(signedOutUser).toBeNull();
+  });
+
+  it("accepts sign-in regardless of email casing", async () => {
+    const created = await signUp({
+      name: "Case User",
+      email: "Case.User@Example.com",
+      password: "Password123",
+    });
+    const signedIn = await signIn({
+      email: "CASE.USER@EXAMPLE.COM",
+      password: "Password123",
+    });
+
+    expect(created.user.email).toBe("case.user@example.com");
+    expect(signedIn.user.email).toBe("case.user@example.com");
   });
 });

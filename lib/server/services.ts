@@ -163,7 +163,10 @@ export async function updateReminder(reminderId: string, input: unknown) {
 export async function signIn(input: unknown) {
   const credentials = signInRequestSchema.parse(input);
   const db = await readDatabase();
-  const user = db.users.find((entry) => entry.email === credentials.email);
+  const normalizedEmail = credentials.email.toLowerCase();
+  const user = db.users.find(
+    (entry) => entry.email.trim().toLowerCase() === normalizedEmail,
+  );
   if (
     !user ||
     !verifyPassword({
@@ -190,15 +193,20 @@ export async function signIn(input: unknown) {
 export async function signUp(input: unknown) {
   const nextUser = signUpRequestSchema.parse(input);
   const db = await readDatabase();
+  const normalizedEmail = nextUser.email.toLowerCase();
 
-  if (db.users.some((user) => user.email === nextUser.email)) {
+  if (
+    db.users.some(
+      (user) => user.email.trim().toLowerCase() === normalizedEmail,
+    )
+  ) {
     throw new Error("An account with this email already exists");
   }
 
   const passwordSalt = createPasswordSalt();
   const createdUser = {
     id: `user-${Date.now()}`,
-    email: nextUser.email,
+    email: normalizedEmail,
     name: nextUser.name,
     passwordSalt,
     passwordHash: hashPassword(nextUser.password, passwordSalt),

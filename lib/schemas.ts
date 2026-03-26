@@ -141,13 +141,13 @@ export const backendStateSchema = z.object({
 });
 
 export const signInRequestSchema = z.object({
-  email: z.string().email(),
+  email: z.string().trim().toLowerCase().email(),
   password: z.string().min(8),
 });
 
 export const signUpRequestSchema = z.object({
   name: z.string().min(2),
-  email: z.string().email(),
+  email: z.string().trim().toLowerCase().email(),
   password: z.string().min(8),
 });
 
