@@ -35,7 +35,7 @@ export function DesktopAuthScreen() {
   } = useForm<DesktopAuthValues>({
     resolver: zodResolver(desktopAuthSchema),
     defaultValues: {
-      email: "you@example.com",
+      email: "",
       password: "",
     },
   });

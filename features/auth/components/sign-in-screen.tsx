@@ -35,7 +35,7 @@ export function SignInScreen() {
   } = useForm<SignInValues>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      email: "you@example.com",
+      email: "",
       password: "",
     },
   });
