@@ -89,7 +89,7 @@ export function LandingPage({
             </div>
           </div>
           <div className="space-y-4">
-            <div className="bg-foreground text-background rounded-[28px] border border-transparent p-5">
+            <div className="rounded-[28px] border border-transparent bg-[linear-gradient(180deg,#111111_0%,#232323_100%)] p-5 text-white">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <div className="text-xs tracking-[0.18em] text-white/70 uppercase">
