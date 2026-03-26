@@ -1,5 +1,4 @@
 const mobileToDesktopPathMap = {
-  "/": "/desktop",
   "/overview": "/desktop/overview",
   "/prayer-times": "/desktop/prayer-times",
   "/qibla": "/desktop/qibla",
