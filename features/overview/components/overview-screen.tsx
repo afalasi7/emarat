@@ -11,7 +11,7 @@ interface OverviewScreenProps {
 export function OverviewScreen({ data = mockOverview }: OverviewScreenProps) {
   return (
     <AppShell title="Emarat" meta={data.hijriDate}>
-      <SectionCard className="border-transparent bg-[linear-gradient(180deg,#111111_0%,#1A2340_100%)] text-white">
+      <SectionCard className="border-transparent bg-[linear-gradient(180deg,#111111_0%,#2a2a2a_100%)] text-white">
         <div className="text-xs font-medium tracking-[0.2em] text-white/65 uppercase">
           Next prayer
         </div>
@@ -38,7 +38,7 @@ export function OverviewScreen({ data = mockOverview }: OverviewScreenProps) {
           </p>
           <div className="text-muted-foreground flex items-center justify-between text-xs">
             <span>{data.rhythmCards[0]?.metaLeft}</span>
-            <span className="font-display text-[color:var(--color-info-foreground)]">
+            <span className="font-display text-foreground">
               {data.rhythmCards[0]?.metaRight}
             </span>
           </div>
@@ -76,12 +76,12 @@ export function OverviewScreen({ data = mockOverview }: OverviewScreenProps) {
         <h2 className="font-display text-base font-semibold">Upcoming</h2>
         <SectionCard className="flex-row items-center justify-between">
           <div className="flex items-center gap-3">
-            <Clock3 className="text-primary h-5 w-5" />
+            <Clock3 className="h-5 w-5" />
             <span className="font-display text-sm font-semibold">
               {data.upcoming.label}
             </span>
           </div>
-          <span className="text-sm font-medium text-[color:var(--color-info-foreground)]">
+          <span className="text-sm font-medium text-foreground">
             {data.upcoming.time}
           </span>
         </SectionCard>
@@ -89,7 +89,7 @@ export function OverviewScreen({ data = mockOverview }: OverviewScreenProps) {
 
       <div className="border-border/80 bg-card/75 text-muted-foreground grid grid-cols-3 gap-2 rounded-[22px] border p-3 text-xs">
         <div className="flex items-center gap-2">
-          <Sparkles className="text-primary h-4 w-4" />
+          <Sparkles className="h-4 w-4" />
           Ready
         </div>
         <div className="flex items-center gap-2">
@@ -97,7 +97,7 @@ export function OverviewScreen({ data = mockOverview }: OverviewScreenProps) {
           Quiet
         </div>
         <div className="flex items-center gap-2">
-          <SunMedium className="text-primary h-4 w-4" />
+          <SunMedium className="h-4 w-4" />
           Clear
         </div>
       </div>

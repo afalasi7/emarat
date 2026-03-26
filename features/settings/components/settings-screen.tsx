@@ -13,7 +13,6 @@ import { useSettingsBackend } from "@/hooks/use-settings-backend";
 export function SettingsScreen() {
   const router = useRouter();
   const {
-    devices,
     error,
     reminders,
     selectedReminderId,
@@ -44,7 +43,7 @@ export function SettingsScreen() {
             <p className="text-muted-foreground mt-1 text-sm">
               {sessionUser
                 ? `${sessionUser.name} · ${sessionUser.email}`
-                : "Not signed in yet. Your local preferences still load, but sync stays offline."}
+                : "Not signed in yet. Local preferences still load on this device."}
             </p>
           </div>
           {sessionUser ? (
@@ -64,7 +63,7 @@ export function SettingsScreen() {
       </SectionCard>
       <SectionCard className="bg-secondary gap-2">
         <div className="flex items-center gap-3">
-          <BellRing className="text-primary h-5 w-5" />
+          <BellRing className="h-5 w-5" />
           <div className="font-display text-base font-semibold">Reminders</div>
         </div>
         <p className="text-muted-foreground text-sm leading-6">
@@ -72,19 +71,19 @@ export function SettingsScreen() {
         </p>
       </SectionCard>
 
-      <SectionCard className="gap-2 border-transparent bg-[linear-gradient(180deg,#0F172A_0%,#1A2340_100%)] text-white">
+      <SectionCard className="gap-2 border-transparent bg-[linear-gradient(180deg,#111111_0%,#252525_100%)] text-white">
         <div className="flex items-center gap-3">
-          <Sparkles className="text-primary h-5 w-5" />
+          <Sparkles className="h-5 w-5" />
           <div className="font-display text-base font-semibold">Premium</div>
         </div>
         <p className="text-sm leading-6 text-white/72">
-          Unlock travel prayer packs and family sync.
+          Unlock travel prayer packs and advanced reminder controls.
         </p>
       </SectionCard>
 
       <SectionCard className="gap-4">
         <div className="flex items-center gap-3">
-          <MapPinned className="text-primary h-5 w-5" />
+          <MapPinned className="h-5 w-5" />
           <div>
             <div className="font-display text-base font-semibold">Location</div>
             <p className="text-muted-foreground text-sm">
@@ -122,10 +121,17 @@ export function SettingsScreen() {
             const active = reminder.id === selectedReminderId;
 
             return (
-              <button
+              <div
                 key={reminder.id}
-                type="button"
+                role="button"
+                tabIndex={0}
                 onClick={() => setSelectedReminder(reminder.id)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    setSelectedReminder(reminder.id);
+                  }
+                }}
                 className={`w-full rounded-[18px] border px-4 py-3 text-left transition ${
                   active
                     ? "border-transparent bg-foreground text-background"
@@ -177,7 +183,7 @@ export function SettingsScreen() {
                     +5 min
                   </Button>
                 </div>
-              </button>
+              </div>
             );
           })}
         </div>
@@ -200,36 +206,12 @@ export function SettingsScreen() {
 
       <SectionCard className="bg-secondary gap-3">
         <div className="flex items-center gap-3">
-          <Lock className="text-primary h-5 w-5" />
+          <Lock className="h-5 w-5" />
           <div className="font-display text-base font-semibold">Privacy</div>
         </div>
         <p className="text-muted-foreground text-sm leading-6">
           Face ID unlock and local-only history are enabled.
         </p>
-      </SectionCard>
-
-      <SectionCard className="gap-3">
-        <div className="font-display text-base font-semibold">
-          Synced devices
-        </div>
-        <div className="space-y-2">
-          {devices.map((device) => (
-            <div
-              key={device.id}
-              className="bg-secondary flex items-center justify-between rounded-[16px] px-4 py-3"
-            >
-              <div>
-                <div className="font-medium">{device.name}</div>
-                <div className="text-muted-foreground text-sm">
-                  {device.lastActive}
-                </div>
-              </div>
-              <div className="text-xs font-semibold tracking-[0.16em] text-emerald-600 uppercase dark:text-emerald-300">
-                {device.synced ? "Synced" : "Pending"}
-              </div>
-            </div>
-          ))}
-        </div>
       </SectionCard>
     </AppShell>
   );

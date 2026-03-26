@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { DesktopOverviewScreen } from "@/features/overview/components/desktop-overview-screen";
 import { readSessionUserFromCookies } from "@/lib/server/route-auth";
-import { getDesktopOverviewData, getDevices } from "@/lib/server/services";
+import { getDesktopOverviewData } from "@/lib/server/services";
 
 export const dynamic = "force-dynamic";
 
@@ -11,10 +11,7 @@ export default async function DesktopOverviewPage() {
     redirect("/desktop/sign-in");
   }
 
-  const [overview, devices] = await Promise.all([
-    getDesktopOverviewData(),
-    getDevices(),
-  ]);
+  const overview = await getDesktopOverviewData();
 
-  return <DesktopOverviewScreen devices={devices} overview={overview} />;
+  return <DesktopOverviewScreen overview={overview} />;
 }

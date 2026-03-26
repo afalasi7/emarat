@@ -17,14 +17,14 @@ export function DesktopQiblaScreen({
       subtitle="Desktop guidance for orientation, precision, and prayer readiness"
     >
       <section className="grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
-        <SectionCard className="border-transparent bg-[linear-gradient(135deg,#DBEAFE_0%,#C7D8F4_55%,#E2E8F0_100%)] dark:bg-[linear-gradient(135deg,#172554_0%,#1E295E_55%,#111827_100%)]">
-          <div className="text-muted-foreground text-xs font-semibold tracking-[0.18em] uppercase dark:text-sky-100/72">
+        <SectionCard className="border-transparent bg-[linear-gradient(135deg,#efefef_0%,#e1e1e1_55%,#d8d8d8_100%)] dark:bg-[linear-gradient(135deg,#222222_0%,#1a1a1a_55%,#121212_100%)]">
+          <div className="text-muted-foreground text-xs font-semibold tracking-[0.18em] uppercase dark:text-white/68">
             Live heading
           </div>
-          <div className="font-display text-[2.4rem] font-semibold tracking-[-0.04em] text-slate-950 dark:text-white">
+          <div className="font-display text-[2.4rem] font-semibold tracking-[-0.04em]">
             {data.directionLabel}
           </div>
-          <p className="max-w-xl text-sm leading-7 text-[color:var(--color-info-foreground)] dark:text-sky-100">
+          <p className="text-muted-foreground max-w-xl text-sm leading-7 dark:text-white/76">
             {data.guidance}
           </p>
           <div className="grid gap-3 md:grid-cols-3">
@@ -77,10 +77,10 @@ function GuideCard({
   title: string;
 }) {
   return (
-    <div className="border-border bg-card flex items-start gap-4 rounded-[20px] border px-4 py-4">
-      <div className="bg-secondary flex h-12 w-12 shrink-0 items-center justify-center rounded-[16px]">
-        <Icon className="text-primary h-5 w-5" />
-      </div>
+      <div className="border-border bg-card flex items-start gap-4 rounded-[20px] border px-4 py-4">
+        <div className="bg-secondary flex h-12 w-12 shrink-0 items-center justify-center rounded-[16px]">
+          <Icon className="h-5 w-5" />
+        </div>
       <div>
         <div className="font-display text-base font-semibold">{title}</div>
         <p className="text-muted-foreground mt-1 text-sm leading-6">
@@ -93,11 +93,11 @@ function GuideCard({
 
 function MetricCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[18px] bg-white/72 px-4 py-3 dark:bg-white/6">
-      <div className="text-xs font-semibold tracking-[0.16em] text-slate-600 uppercase dark:text-sky-100/68">
+    <div className="rounded-[18px] bg-white/72 px-4 py-3 dark:bg-white/8">
+      <div className="text-muted-foreground text-xs font-semibold tracking-[0.16em] uppercase dark:text-white/65">
         {label}
       </div>
-      <div className="font-display mt-2 text-lg font-semibold text-slate-950 dark:text-white">
+      <div className="font-display mt-2 text-lg font-semibold">
         {value}
       </div>
     </div>

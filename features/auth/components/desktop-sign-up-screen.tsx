@@ -42,15 +42,15 @@ export function DesktopSignUpScreen() {
   return (
     <DesktopShell
       title="Create your Emarat account"
-      subtitle="Start from the landing page, then move straight into the synced desktop experience"
+      subtitle="Start from landing, then continue into the desktop experience"
     >
       <section className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
-        <div className="rounded-[28px] bg-[linear-gradient(180deg,#10141D_0%,#18253A_100%)] p-7 text-white">
+        <div className="rounded-[28px] bg-[linear-gradient(180deg,#111111_0%,#262626_100%)] p-7 text-white">
           <div className="text-xs font-semibold tracking-[0.18em] text-white/60 uppercase">
             Account setup
           </div>
           <h2 className="font-display mt-4 text-[2.1rem] font-semibold tracking-[-0.04em]">
-            Sign up once, then keep mobile and desktop prayer views in sync.
+            Sign up once, then continue with a consistent prayer experience.
           </h2>
           <p className="mt-4 max-w-md text-sm leading-7 text-white/74">
             Landing pages now sit in front of the product, so new users start
@@ -64,7 +64,7 @@ export function DesktopSignUpScreen() {
               Sign up
             </h2>
             <p className="text-muted-foreground text-sm">
-              Create an account to unlock synced reminders and desktop continuity.
+              Create an account to save your reminders and preferences.
             </p>
           </div>
           <form

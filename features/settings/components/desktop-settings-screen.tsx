@@ -16,7 +16,7 @@ export function DesktopSettingsScreen() {
   return (
     <DesktopShell
       title="Family & Settings"
-      subtitle="Preferences, privacy, and device continuity"
+      subtitle="Preferences, privacy, and reminder behavior"
     >
       {error ? (
         <SectionCard className="border-transparent bg-[color:var(--color-error)] text-[color:var(--color-error-foreground)]">
@@ -35,7 +35,7 @@ export function DesktopSettingsScreen() {
             <p className="text-muted-foreground mt-1 text-sm">
               {sessionUser
                 ? `${sessionUser.name} · ${sessionUser.email}`
-                : "No active session. Desktop settings still render, but sync remains local-only."}
+                : "No active session. Desktop settings still render locally."}
             </p>
           </div>
           {sessionUser ? (
@@ -78,7 +78,7 @@ export function DesktopSettingsScreen() {
               value={settings.travelMode ? "Enabled" : "Disabled"}
             />
             <SettingCard
-              description="Theme stays in sync with the app shell and mode toggle."
+              description="Theme stays consistent with the app shell and mode toggle."
               title="Theme"
               value={settings.themePreference}
             />
@@ -96,8 +96,7 @@ export function DesktopSettingsScreen() {
             Theme preference
           </div>
           <p className="text-muted-foreground mt-1 text-sm">
-            Apply the same theme selection across the shared mobile and desktop
-            experience.
+            Apply your theme selection across the current experience.
           </p>
         </div>
         <ThemePreferenceControl

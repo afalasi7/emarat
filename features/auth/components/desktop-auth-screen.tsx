@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { postSignIn } from "@/lib/client/api";
-import { mockDevices } from "@/lib/mock-data";
 
 const desktopAuthSchema = z.object({
   email: z.string().email(),
@@ -44,27 +43,27 @@ export function DesktopAuthScreen() {
   return (
     <DesktopShell
       title="Emarat account"
-      subtitle="Sync reminders across phone, watch, and desktop"
+      subtitle="Secure account access for your prayer dashboard"
     >
       <section className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
-        <div className="rounded-[24px] bg-[linear-gradient(180deg,#0B1220_0%,#172036_100%)] p-7 text-white">
+        <div className="rounded-[24px] bg-[linear-gradient(180deg,#111111_0%,#242424_100%)] p-7 text-white">
           <div className="space-y-4">
             <p className="font-display text-sm tracking-[0.2em] text-white/60 uppercase">
               Account benefits
             </p>
             <h2 className="font-display text-[1.9rem] font-semibold tracking-[-0.04em]">
-              Bilingual reminders, family sync, and desktop prayer windows stay
-              connected.
+              Keep prayer reminders, settings, and daily flow available after
+              sign-in.
             </h2>
           </div>
           <div className="mt-8 space-y-3">
             <Benefit
               icon={ShieldCheck}
-              label="Secure sign-in with device continuity."
+              label="Secure sign-in with session protection."
             />
             <Benefit
               icon={Users}
-              label="Share arrival windows with family members."
+              label="Share the same prayer schedule with your household."
             />
             <Benefit
               icon={Sparkles}
@@ -78,7 +77,7 @@ export function DesktopAuthScreen() {
               Welcome back
             </h2>
             <p className="text-muted-foreground text-sm">
-              Sign in to keep prayer reminders consistent on every device.
+              Sign in to continue with your account preferences.
             </p>
           </div>
           <form
@@ -120,7 +119,7 @@ export function DesktopAuthScreen() {
               type="submit"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Syncing..." : "Sign In"}
+              {isSubmitting ? "Signing in..." : "Sign In"}
             </Button>
           </form>
           {error ? (
@@ -136,7 +135,7 @@ export function DesktopAuthScreen() {
           {sessionUser ? (
             <div className="mt-4 flex items-center gap-2 rounded-[18px] bg-[color:var(--color-success)] px-4 py-3 text-sm text-[color:var(--color-success-foreground)]">
               <CheckCircle2 className="h-4 w-4" />
-              Signed in as {sessionUser.name}. Desktop sync is ready.
+              Signed in as {sessionUser.name}.
             </div>
           ) : null}
           {sessionUser ? (
@@ -150,16 +149,6 @@ export function DesktopAuthScreen() {
               {signingOut ? "Signing out..." : "Sign out"}
             </Button>
           ) : null}
-          <div className="mt-6 grid gap-3 md:grid-cols-3">
-            {mockDevices.map((device) => (
-              <div key={device.id} className="bg-secondary rounded-[18px] px-4 py-3">
-                <div className="font-medium">{device.name}</div>
-                <div className="text-muted-foreground text-sm">
-                  {device.lastActive}
-                </div>
-              </div>
-            ))}
-          </div>
           <p className="text-muted-foreground mt-5 text-sm">
             Need an account?{" "}
             <Link className="text-foreground font-medium" href="/desktop/sign-up">
@@ -175,7 +164,7 @@ export function DesktopAuthScreen() {
 function Benefit({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
   return (
     <div className="flex items-center gap-3 rounded-[18px] bg-white/6 px-4 py-3 text-sm text-white/78">
-      <Icon className="text-primary h-4 w-4" />
+      <Icon className="h-4 w-4" />
       <span>{label}</span>
     </div>
   );

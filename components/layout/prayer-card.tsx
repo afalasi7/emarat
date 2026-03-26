@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 const statusStyles: Record<PrayerStatus, string> = {
   completed: "bg-card text-card-foreground",
   current:
-    "border-transparent bg-[linear-gradient(180deg,#1A2340_0%,#0F172A_100%)] text-white",
+    "border-transparent bg-[linear-gradient(180deg,#101010_0%,#262626_100%)] text-white",
   upcoming: "bg-card text-card-foreground",
   scheduled: "bg-card text-card-foreground",
   missed:
@@ -31,7 +31,7 @@ export function PrayerCard({
         "border",
         compact ? "gap-2 p-3.5" : "gap-2 p-4",
         statusStyles[status],
-        status === "current" ? "shadow-[0_18px_35px_rgb(15_23_42_/_0.25)]" : "",
+        status === "current" ? "shadow-[0_16px_30px_rgb(0_0_0_/_0.24)]" : "",
       )}
     >
       <div className="font-display text-base font-semibold">{title}</div>

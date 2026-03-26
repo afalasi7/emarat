@@ -1,43 +1,19 @@
-"use client";
-
-import { Monitor, Smartphone, Watch } from "lucide-react";
-import { useEffect } from "react";
 import { DesktopShell } from "@/components/layout/desktop-shell";
 import { SectionCard } from "@/components/layout/section-card";
 import { mockDesktopOverview } from "@/lib/mock-data";
-import { useAppStore } from "@/store/app-store";
-import type { DesktopOverviewData, Device } from "@/types/domain";
-
-const deviceIcons = {
-  phone: Smartphone,
-  watch: Watch,
-  desktop: Monitor,
-} as const;
+import type { DesktopOverviewData } from "@/types/domain";
 
 interface DesktopOverviewScreenProps {
-  devices?: Device[];
   overview?: DesktopOverviewData;
 }
 
 export function DesktopOverviewScreen({
-  devices: initialDevices,
   overview = mockDesktopOverview,
 }: DesktopOverviewScreenProps) {
-  const devices = useAppStore((state) => state.devices);
-  const activeDeviceId = useAppStore((state) => state.activeDeviceId);
-  const hydrateServerState = useAppStore((state) => state.hydrateServerState);
-  const setActiveDevice = useAppStore((state) => state.setActiveDevice);
-
-  useEffect(() => {
-    if (initialDevices) {
-      hydrateServerState({ devices: initialDevices });
-    }
-  }, [hydrateServerState, initialDevices]);
-
   return (
     <DesktopShell title="Emarat Dashboard" subtitle="Prayer reminder desktop">
       <section className="grid gap-5 lg:grid-cols-2">
-        <SectionCard className="border-transparent bg-[linear-gradient(135deg,#0B0B0C_0%,#1B2432_68%,#5F7D95_100%)] text-white">
+        <SectionCard className="border-transparent bg-[linear-gradient(135deg,#121212_0%,#232323_68%,#2f2f2f_100%)] text-white">
           <div className="font-display text-[2rem] font-semibold tracking-[-0.04em]">
             {overview.heroLeft.title}
           </div>
@@ -77,44 +53,17 @@ export function DesktopOverviewScreen({
           </div>
         </SectionCard>
         <SectionCard className="gap-4">
-          <h2 className="font-display text-xl font-semibold">Synced devices</h2>
+          <h2 className="font-display text-xl font-semibold">Focus checklist</h2>
           <div className="grid gap-3">
-            {devices.map((device) => {
-              const Icon = deviceIcons[device.kind];
-              const active = device.id === activeDeviceId;
-
-              return (
-                <button
-                  key={device.id}
-                  type="button"
-                  onClick={() => setActiveDevice(device.id)}
-                  className={`flex items-center justify-between rounded-[18px] border px-4 py-3 text-left transition ${
-                    active
-                      ? "bg-foreground text-background border-transparent"
-                      : "border-border bg-card text-card-foreground"
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <Icon className="h-4 w-4" />
-                    <div>
-                      <div className="font-medium">{device.name}</div>
-                      <div
-                        className={`text-xs ${
-                          active
-                            ? "text-background/70"
-                            : "text-muted-foreground"
-                        }`}
-                      >
-                        {device.lastActive}
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-xs font-semibold">
-                    {device.synced ? "Synced" : "Pending"}
-                  </span>
-                </button>
-              );
-            })}
+            <div className="border-border bg-card rounded-[18px] border px-4 py-3 text-sm">
+              Qibla heading visible before prayer entry.
+            </div>
+            <div className="border-border bg-card rounded-[18px] border px-4 py-3 text-sm">
+              Reminder windows set for Maghrib and Isha.
+            </div>
+            <div className="border-border bg-card rounded-[18px] border px-4 py-3 text-sm">
+              Theme and quiet mode kept consistent with user preference.
+            </div>
           </div>
         </SectionCard>
       </section>

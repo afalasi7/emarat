@@ -40,12 +40,10 @@ export function DesktopPrayerTimesScreen({
             Readiness board
           </div>
           <p className="text-muted-foreground text-sm">
-            Quiet hours, commute buffer, and device delivery stay aligned for
-            the next prayer.
+            Quiet hours and commute buffer stay aligned for the next prayer.
           </p>
           <div className="bg-secondary text-foreground rounded-[18px] px-4 py-3 text-sm">
-            Current cadence: on-time window with soft chime and desktop banner
-            fallback.
+            Current cadence: on-time window with soft chime fallback.
           </div>
           <div className="bg-card text-muted-foreground rounded-[18px] px-4 py-3 text-sm">
             Upcoming handoff: move reminder priority to the desktop 18 minutes

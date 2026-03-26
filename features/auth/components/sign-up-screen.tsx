@@ -44,12 +44,12 @@ export function SignUpScreen() {
   return (
     <AppShell
       title="Create your account"
-      subtitle="Start with a clean landing flow, then move into your synced prayer dashboard."
+      subtitle="Start from landing, then continue into your prayer dashboard."
       showNav={false}
     >
       <AuthFormCard
         title="Sign Up"
-        description="Create an Emarat account to unlock synced prayer rhythm, Qibla guidance, and device continuity."
+        description="Create an Emarat account for reminders, Qibla guidance, and settings."
       >
         <form
           className="space-y-4"

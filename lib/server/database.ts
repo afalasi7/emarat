@@ -1,12 +1,12 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import initialDatabaseState from "@/data/emarat-db.json";
 import { backendStateSchema } from "@/lib/schemas";
+import { seedBackendState } from "@/lib/server/seed-state";
 import type { BackendState } from "@/types/domain";
 
 const DEFAULT_DATA_FILE = path.join(process.cwd(), "data", "emarat-db.json");
 const SERIALIZED_INITIAL_STATE = `${JSON.stringify(
-  backendStateSchema.parse(initialDatabaseState),
+  backendStateSchema.parse(seedBackendState),
   null,
   2,
 )}\n`;

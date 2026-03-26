@@ -45,7 +45,7 @@ export function PrayerTimesScreen({
         />
       </div>
 
-      <SectionCard className="border-sky-200 bg-sky-50 dark:border-sky-900 dark:bg-sky-950/30">
+      <SectionCard className="border-border bg-secondary">
         <div className="font-display text-sm font-semibold">Prayer window</div>
         <p className="text-muted-foreground text-sm">
           Sunrise {prayerTimes[1]?.adhanTime} · Isha {prayerTimes[5]?.adhanTime} ·{" "}
@@ -54,16 +54,16 @@ export function PrayerTimesScreen({
       </SectionCard>
 
       <div className="grid grid-cols-2 gap-3">
-        <SectionCard className="border-transparent bg-sky-50 dark:bg-sky-950/30">
-          <div className="font-display text-xs font-semibold tracking-[0.16em] text-sky-700 uppercase dark:text-sky-300">
+        <SectionCard className="border-transparent bg-secondary">
+          <div className="text-muted-foreground font-display text-xs font-semibold tracking-[0.16em] uppercase">
             Streak
           </div>
           <div className="font-display text-lg font-semibold">
             {getPrayerCompletionSummary(prayerTimes)}
           </div>
         </SectionCard>
-        <SectionCard className="border-transparent bg-emerald-50 dark:bg-emerald-950/30">
-          <div className="font-display text-xs font-semibold tracking-[0.16em] text-emerald-700 uppercase dark:text-emerald-300">
+        <SectionCard className="border-transparent bg-secondary">
+          <div className="text-muted-foreground font-display text-xs font-semibold tracking-[0.16em] uppercase">
             Window
           </div>
           <div className="font-display text-lg font-semibold">3h 45m left</div>

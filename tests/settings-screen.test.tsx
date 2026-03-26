@@ -66,11 +66,11 @@ describe("SettingsScreen", () => {
     });
   });
 
-  it("renders settings cards and synced devices", () => {
+  it("renders settings cards and theme controls", () => {
     renderWithProviders(<SettingsScreen />);
     expect(screen.getByText("Reminders")).toBeInTheDocument();
     expect(screen.getByText("Reminder routing")).toBeInTheDocument();
-    expect(screen.getByText("Synced devices")).toBeInTheDocument();
+    expect(screen.getByText("Theme preference")).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /system/i }),
     ).toBeInTheDocument();

@@ -11,11 +11,11 @@ interface QiblaScreenProps {
 export function QiblaScreen({ data = mockQiblaData }: QiblaScreenProps) {
   return (
     <AppShell title="Qibla" meta="Live">
-      <SectionCard className="border-transparent bg-[linear-gradient(180deg,#DBEAFE_0%,#C8D9F8_100%)] dark:bg-[linear-gradient(180deg,#172554_0%,#1E295E_100%)]">
+      <SectionCard className="border-transparent bg-[linear-gradient(180deg,#eeeeee_0%,#e2e2e2_100%)] dark:bg-[linear-gradient(180deg,#212121_0%,#171717_100%)]">
         <div className="font-display text-[2.2rem] leading-none font-semibold tracking-[-0.04em]">
           {data.directionLabel}
         </div>
-        <p className="max-w-[22rem] text-sm leading-7 text-[color:var(--color-info-foreground)] dark:text-sky-100">
+        <p className="text-muted-foreground max-w-[22rem] text-sm leading-7 dark:text-white/75">
           {data.guidance}
         </p>
       </SectionCard>
@@ -32,7 +32,7 @@ export function QiblaScreen({ data = mockQiblaData }: QiblaScreenProps) {
         </SectionCard>
         <SectionCard className="bg-card/85 flex-row items-center gap-4">
           <div className="bg-background flex h-13 w-13 items-center justify-center rounded-[14px] border">
-            <Compass className="text-primary h-6 w-6" />
+            <Compass className="h-6 w-6" />
           </div>
           <div className="space-y-1">
             <div className="font-display text-lg font-semibold">
@@ -51,7 +51,7 @@ export function QiblaScreen({ data = mockQiblaData }: QiblaScreenProps) {
           <div className="text-muted-foreground text-xs font-semibold tracking-[0.16em] uppercase">
             Turn inside
           </div>
-          <div className="font-display text-[1.75rem] font-semibold text-blue-600 dark:text-sky-300">
+          <div className="font-display text-[1.75rem] font-semibold">
             {data.degrees}° right
           </div>
         </SectionCard>
@@ -59,14 +59,14 @@ export function QiblaScreen({ data = mockQiblaData }: QiblaScreenProps) {
           <div className="text-muted-foreground text-xs font-semibold tracking-[0.16em] uppercase">
             When aligned
           </div>
-          <div className="font-display text-[1.4rem] font-semibold text-blue-600 dark:text-sky-300">
+          <div className="font-display text-[1.4rem] font-semibold">
             Show Kaaba
           </div>
         </SectionCard>
       </div>
 
       <SectionCard className="bg-secondary flex-row items-center gap-3 border-transparent">
-        <LocateFixed className="text-primary h-5 w-5" />
+        <LocateFixed className="h-5 w-5" />
         <p className="text-muted-foreground text-sm">
           Precision {data.precisionMeters}m · Distance {data.travelDistanceKm}
           km

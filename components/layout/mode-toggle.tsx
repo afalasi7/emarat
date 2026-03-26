@@ -21,7 +21,7 @@ export function ModeToggle({ className }: { className?: string }) {
       )}
     >
       {isDark ? (
-        <SunMedium className="text-primary h-4 w-4" />
+        <SunMedium className="h-4 w-4" />
       ) : (
         <MoonStar className="h-4 w-4" />
       )}

@@ -2,9 +2,8 @@ import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const toneStyles = {
-  info: "bg-sky-100 text-sky-700 dark:bg-sky-950/50 dark:text-sky-300",
-  success:
-    "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300",
+  info: "bg-secondary text-foreground",
+  success: "bg-muted text-foreground",
   neutral: "bg-secondary text-secondary-foreground",
 } as const;
 

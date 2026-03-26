@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { postSignIn } from "@/lib/client/api";
-import { mockDevices } from "@/lib/mock-data";
 
 const signInSchema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -44,12 +43,12 @@ export function SignInScreen() {
   return (
     <AppShell
       title="Welcome back"
-      subtitle="Sign in to sync prayer reminders across devices."
+      subtitle="Sign in to access your prayer dashboard."
       showNav={false}
     >
       <AuthFormCard
         title="Sign In"
-        description="Sync reminders across your phone, watch, and desktop with the same quiet-hour settings."
+        description="Continue with your account to keep reminders and preferences available."
       >
         <form
           className="space-y-4"
@@ -118,7 +117,7 @@ export function SignInScreen() {
         {sessionUser ? (
           <div className="flex items-center gap-2 rounded-[18px] bg-[color:var(--color-success)] px-4 py-3 text-sm text-[color:var(--color-success-foreground)]">
             <CheckCircle2 className="h-4 w-4" />
-            Signed in as {sessionUser.name}. Devices are ready to sync.
+            Signed in as {sessionUser.name}.
           </div>
         ) : null}
         {sessionUser ? (
@@ -131,19 +130,6 @@ export function SignInScreen() {
             {signingOut ? "Signing out..." : "Sign out"}
           </Button>
         ) : null}
-        <div className="grid gap-3">
-          {mockDevices.map((device) => (
-            <div
-              key={device.id}
-              className="bg-secondary rounded-[18px] px-4 py-3"
-            >
-              <div className="font-medium">{device.name}</div>
-              <div className="text-muted-foreground text-sm">
-                {device.lastActive}
-              </div>
-            </div>
-          ))}
-        </div>
         <p className="text-muted-foreground text-sm">
           Need an account?{" "}
           <Link className="text-foreground font-medium" href="/sign-up">
