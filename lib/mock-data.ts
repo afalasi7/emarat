@@ -147,7 +147,7 @@ export const mockQiblaData: QiblaData = qiblaDataSchema.parse({
 export const mockOverview = overviewSchema.parse({
   hijriDate: "12 Rabi I",
   location: "Mosque Street, Dubai",
-  nextPrayerLabel: "Asr in 01:12",
+  nextPrayerLabel: "Next prayer",
   rhythmCards: [
     {
       title: "Fajr completed",
@@ -172,7 +172,7 @@ export const mockOverview = overviewSchema.parse({
 
 export const mockDesktopOverview = desktopOverviewSchema.parse({
   heroLeft: {
-    title: "Asr in 01:12",
+    title: "Next prayer",
     description: "Smart reminders are active for today's remaining prayers.",
   },
   heroRight: {

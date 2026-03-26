@@ -6,7 +6,7 @@ import { renderWithProviders } from "@/tests/render";
 describe("OverviewScreen", () => {
   it("renders the overview hero and rhythm section", () => {
     renderWithProviders(<OverviewScreen />);
-    expect(screen.getByText("Asr in 01:12")).toBeInTheDocument();
+    expect(screen.getAllByText("Next prayer").length).toBeGreaterThan(0);
     expect(screen.getByText("Today's rhythm")).toBeInTheDocument();
   });
 });

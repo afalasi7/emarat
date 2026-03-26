@@ -2,7 +2,7 @@
   "overview": {
     "hijriDate": "12 Rabi I",
     "location": "Mosque Street, Dubai",
-    "nextPrayerLabel": "Asr in 01:12",
+    "nextPrayerLabel": "Next prayer",
     "rhythmCards": [
       {
         "title": "Fajr completed",
@@ -32,7 +32,7 @@
   },
   "desktopOverview": {
     "heroLeft": {
-      "title": "Asr in 01:12",
+      "title": "Next prayer",
       "description": "Smart reminders are active for today's remaining prayers."
     },
     "heroRight": {

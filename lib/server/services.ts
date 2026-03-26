@@ -3,6 +3,7 @@ import {
   getLiveQiblaSnapshot,
   getNextPrayerLabel,
 } from "@/lib/server/aladhan";
+import { getNextPrayer } from "@/lib/prayer";
 import { mockQiblaBearingService } from "@/lib/qibla";
 import {
   reminderUpdateSchema,
@@ -32,30 +33,43 @@ export async function getOverviewData() {
     ...location,
     fallbackPrayerTimes: db.prayerTimes,
   });
-  if (!liveSnapshot) {
-    return db.overview;
-  }
 
   const now = new Date();
-  const nextPrayerLabel = getNextPrayerLabel(liveSnapshot.prayerTimes, now);
+  const prayerTimes = liveSnapshot?.prayerTimes ?? db.prayerTimes;
+  const nextPrayerLabel = getNextPrayerLabel(prayerTimes, now);
+  const nextPrayer = getNextPrayer(prayerTimes, now);
 
   return {
     ...db.overview,
-    hijriDate: liveSnapshot.hijriLabel,
-    location: `${liveSnapshot.city}, ${liveSnapshot.country}`,
+    hijriDate: liveSnapshot?.hijriLabel ?? db.overview.hijriDate,
+    location: liveSnapshot
+      ? `${liveSnapshot.city}, ${liveSnapshot.country}`
+      : db.overview.location,
     nextPrayerLabel,
     upcoming: {
       label: "Next prayer",
-      time:
-        liveSnapshot.prayerTimes.find((prayer) => prayer.status === "current")
-          ?.adhanTime ?? db.overview.upcoming.time,
+      time: nextPrayer?.adhanTime ?? db.overview.upcoming.time,
     },
   };
 }
 
 export async function getDesktopOverviewData() {
   const db = await readDatabase();
-  return db.desktopOverview;
+  const location = getPrayerLocation(db.qibla.city);
+  const liveSnapshot = await getLivePrayerSnapshot({
+    ...location,
+    fallbackPrayerTimes: db.prayerTimes,
+  });
+  const prayerTimes = liveSnapshot?.prayerTimes ?? db.prayerTimes;
+  const nextPrayerLabel = getNextPrayerLabel(prayerTimes, new Date());
+
+  return {
+    ...db.desktopOverview,
+    heroLeft: {
+      ...db.desktopOverview.heroLeft,
+      title: nextPrayerLabel,
+    },
+  };
 }
 
 export async function getPrayerTimesData() {
