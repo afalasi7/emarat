@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { getCountdownLabel } from "@/lib/prayer";
 import { buildDirectionLabel, getDirectionDelta } from "@/lib/qibla";
 import type { PrayerName, PrayerTime } from "@/types/domain";
 
@@ -63,6 +62,7 @@ const DEFAULT_CITY = "Dubai";
 const DEFAULT_COUNTRY = "UAE";
 const DEFAULT_LATITUDE = 25.2048;
 const DEFAULT_LONGITUDE = 55.2708;
+const DEFAULT_TIMEZONE = "Asia/Dubai";
 
 export interface LivePrayerSnapshotInput {
   city?: string | undefined;
@@ -161,6 +161,7 @@ export function mapAladhanPrayerTimes(
   timings: z.infer<typeof aladhanTimingsSchema>,
   now: Date,
   fallbackPrayerTimes: PrayerTime[] = [],
+  timeZone = resolvePrayerTimeZone(),
 ) {
   const fallbackByPrayer = new Map(
     fallbackPrayerTimes.map((prayer) => [prayer.name, prayer]),
@@ -174,7 +175,11 @@ export function mapAladhanPrayerTimes(
     };
   });
 
-  const nextIndex = findNextPrayerIndex(entries.map((entry) => entry.clock), now);
+  const nextIndex = findNextPrayerIndex(
+    entries.map((entry) => entry.clock),
+    now,
+    timeZone,
+  );
 
   return entries.map((entry, index) => {
     const fallback = fallbackByPrayer.get(entry.name);
@@ -184,7 +189,7 @@ export function mapAladhanPrayerTimes(
     const status = resolveStatus(offset, completed);
     const note =
       offset === 0
-        ? `Upcoming in ${getCountdownLabel(entry.adhanTime, now)} · ${
+        ? `Upcoming in ${getCountdownLabelFromClock(entry.clock, now, timeZone)} · ${
             reminderEnabled ? "reminder on" : "reminder off"
           }`
         : (fallback?.note ?? defaultNote(entry.name, reminderEnabled));
@@ -201,13 +206,30 @@ export function mapAladhanPrayerTimes(
   });
 }
 
-export function getNextPrayerLabel(prayerTimes: PrayerTime[], now = new Date()) {
-  const nextPrayer = findNextPrayer(prayerTimes, now);
+export function getNextPrayerEntry(
+  prayerTimes: PrayerTime[],
+  now = new Date(),
+  timeZone = resolvePrayerTimeZone(),
+) {
+  return findNextPrayer(prayerTimes, now, timeZone);
+}
+
+export function getNextPrayerLabel(
+  prayerTimes: PrayerTime[],
+  now = new Date(),
+  timeZone = resolvePrayerTimeZone(),
+) {
+  const nextPrayer = findNextPrayer(prayerTimes, now, timeZone);
   if (!nextPrayer) {
     return "Prayer schedule unavailable";
   }
 
-  return `${nextPrayer.name} in ${getCountdownLabel(nextPrayer.adhanTime, now)}`;
+  const nextPrayerClock = meridiemToClock(nextPrayer.adhanTime);
+  return `${nextPrayer.name} in ${getCountdownLabelFromClock(
+    nextPrayerClock,
+    now,
+    timeZone,
+  )}`;
 }
 
 async function fetchAladhanPayload<T>(
@@ -258,24 +280,12 @@ function toMeridiemTime(clock: string) {
   )} ${suffix}`;
 }
 
-function findNextPrayerIndex(clocks: string[], now: Date) {
-  const timeline = clocks.map((clock) => getDateFromClock(clock, now));
-  const nowMs = now.getTime();
-  const currentIndex = timeline.findIndex((time) => time.getTime() > nowMs);
+function findNextPrayerIndex(clocks: string[], now: Date, timeZone: string) {
+  const nowMinutes = getMinutesInTimeZone(now, timeZone);
+  const currentIndex = clocks.findIndex(
+    (clock) => clockToMinutes(clock) >= nowMinutes,
+  );
   return currentIndex >= 0 ? currentIndex : 0;
-}
-
-function getDateFromClock(clock: string, baseDate: Date) {
-  const [hoursPart, minutesPart] = clock.split(":");
-  const hoursRaw = Number(hoursPart);
-  const minutesRaw = Number(minutesPart);
-  if (!Number.isFinite(hoursRaw) || !Number.isFinite(minutesRaw)) {
-    throw new Error(`Invalid clock value: ${clock}`);
-  }
-
-  const date = new Date(baseDate);
-  date.setHours(hoursRaw, minutesRaw, 0, 0);
-  return date;
 }
 
 function resolveStatus(offset: number, completed: boolean) {
@@ -298,21 +308,22 @@ function defaultNote(prayerName: PrayerName, reminderEnabled: boolean) {
     : `${prayerName} reminder off`;
 }
 
-function findNextPrayer(prayerTimes: PrayerTime[], now: Date) {
+function findNextPrayer(prayerTimes: PrayerTime[], now: Date, timeZone: string) {
   if (prayerTimes.length === 0) {
     return null;
   }
 
+  const nowMinutes = getMinutesInTimeZone(now, timeZone);
   const nextPrayer =
     prayerTimes.find((prayer) => {
-      const date = parseMeridiemTime(prayer.adhanTime, now);
-      return date.getTime() > now.getTime();
+      const prayerMinutes = clockToMinutes(meridiemToClock(prayer.adhanTime));
+      return prayerMinutes >= nowMinutes;
     }) ?? prayerTimes[0];
 
   return nextPrayer ?? null;
 }
 
-function parseMeridiemTime(value: string, baseDate: Date) {
+function meridiemToClock(value: string) {
   const [timePart, meridiem] = value.split(" ");
   if (!timePart || !meridiem) {
     throw new Error(`Invalid meridiem time: ${value}`);
@@ -333,7 +344,57 @@ function parseMeridiemTime(value: string, baseDate: Date) {
     hours = 0;
   }
 
-  const date = new Date(baseDate);
-  date.setHours(hours, minutesRaw, 0, 0);
-  return date;
+  return `${String(hours).padStart(2, "0")}:${String(minutesRaw).padStart(2, "0")}`;
+}
+
+function getCountdownLabelFromClock(clock: string, now: Date, timeZone: string) {
+  const nowMinutes = getMinutesInTimeZone(now, timeZone);
+  const targetMinutes = clockToMinutes(clock);
+  const diff = (targetMinutes - nowMinutes + 24 * 60) % (24 * 60);
+  const hours = Math.floor(diff / 60);
+  const minutes = diff % 60;
+  return `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}`;
+}
+
+function getMinutesInTimeZone(now: Date, timeZone: string) {
+  const formatter = new Intl.DateTimeFormat("en-GB", {
+    timeZone,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+  const parts = formatter.formatToParts(now);
+  const hourPart = parts.find((part) => part.type === "hour")?.value;
+  const minutePart = parts.find((part) => part.type === "minute")?.value;
+
+  if (!hourPart || !minutePart) {
+    throw new Error(`Unable to read time for timezone: ${timeZone}`);
+  }
+
+  return clockToMinutes(`${hourPart}:${minutePart}`);
+}
+
+function clockToMinutes(clock: string) {
+  const [hoursPart, minutesPart] = clock.split(":");
+  const hours = Number(hoursPart);
+  const minutes = Number(minutesPart);
+  if (!Number.isFinite(hours) || !Number.isFinite(minutes)) {
+    throw new Error(`Invalid clock value: ${clock}`);
+  }
+
+  return hours * 60 + minutes;
+}
+
+function resolvePrayerTimeZone() {
+  const configured = process.env.EMARAT_TIMEZONE?.trim();
+  const candidate = configured && configured.length > 0 ? configured : DEFAULT_TIMEZONE;
+
+  try {
+    new Intl.DateTimeFormat("en-US", { timeZone: candidate });
+    return candidate;
+  } catch {
+    return DEFAULT_TIMEZONE;
+  }
 }

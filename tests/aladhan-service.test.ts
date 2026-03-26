@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   getLivePrayerSnapshot,
+  getNextPrayerLabel,
   mapAladhanPrayerTimes,
 } from "@/lib/server/aladhan";
 import { mockPrayerTimes } from "@/lib/mock-data";
@@ -37,11 +38,12 @@ afterEach(() => {
 
 describe("aladhan adapter", () => {
   it("maps timings to prayer cards while preserving local completion state", () => {
-    const now = new Date(2026, 2, 24, 13, 0, 0);
+    const now = new Date("2026-03-24T09:00:00.000Z");
     const prayerTimes = mapAladhanPrayerTimes(
       prayerPayload.data.timings,
       now,
       mockPrayerTimes,
+      "Asia/Dubai",
     );
 
     expect(prayerTimes[0]?.adhanTime).toBe("04:52 AM");
@@ -83,5 +85,20 @@ describe("aladhan adapter", () => {
     });
 
     expect(live).toBeNull();
+  });
+
+  it("computes next prayer using prayer-location timezone", () => {
+    const now = new Date("2026-03-24T11:50:00.000Z");
+    const prayerTimes = mapAladhanPrayerTimes(
+      prayerPayload.data.timings,
+      now,
+      mockPrayerTimes,
+      "Asia/Dubai",
+    );
+
+    const label = getNextPrayerLabel(prayerTimes, now, "Asia/Dubai");
+
+    expect(label.startsWith("Maghrib in")).toBe(true);
+    expect(label.startsWith("Dhuhr in")).toBe(false);
   });
 });

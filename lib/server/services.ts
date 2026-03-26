@@ -1,9 +1,9 @@
 import {
+  getNextPrayerEntry,
   getLivePrayerSnapshot,
   getLiveQiblaSnapshot,
   getNextPrayerLabel,
 } from "@/lib/server/aladhan";
-import { getNextPrayer } from "@/lib/prayer";
 import { mockQiblaBearingService } from "@/lib/qibla";
 import {
   reminderUpdateSchema,
@@ -37,7 +37,7 @@ export async function getOverviewData() {
   const now = new Date();
   const prayerTimes = liveSnapshot?.prayerTimes ?? db.prayerTimes;
   const nextPrayerLabel = getNextPrayerLabel(prayerTimes, now);
-  const nextPrayer = getNextPrayer(prayerTimes, now);
+  const nextPrayer = getNextPrayerEntry(prayerTimes, now);
 
   return {
     ...db.overview,
