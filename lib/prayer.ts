@@ -31,6 +31,10 @@ export function formatPrayerTime(value: string, locale = "en-US") {
 
 export function getCountdownParts(target: string, now = new Date()) {
   const targetDate = parseTimeToDate(target, now);
+  if (targetDate.getTime() <= now.getTime()) {
+    targetDate.setDate(targetDate.getDate() + 1);
+  }
+
   const diffMs = targetDate.getTime() - now.getTime();
   const clampedMs = Math.max(diffMs, 0);
   const totalMinutes = Math.floor(clampedMs / 60_000);

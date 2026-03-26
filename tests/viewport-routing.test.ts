@@ -1,13 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { getViewportRedirectPath } from "@/lib/viewport-routing";
+import {
+  getLandingPreviewFromUserAgent,
+  getViewportRedirectPath,
+} from "@/lib/viewport-routing";
 
 describe("viewport routing", () => {
-  it("redirects desktop requests from mobile routes to desktop routes", () => {
+  it("keeps root on landing and redirects desktop requests for app routes", () => {
     expect(
       getViewportRedirectPath({
         pathname: "/",
       }),
-    ).toBe("/desktop");
+    ).toBeNull();
     expect(
       getViewportRedirectPath({
         pathname: "/overview",
@@ -58,5 +61,18 @@ describe("viewport routing", () => {
         pathname: "/api/settings",
       }),
     ).toBeNull();
+  });
+
+  it("detects landing preview from user-agent", () => {
+    expect(
+      getLandingPreviewFromUserAgent(
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0)",
+      ),
+    ).toBe("desktop");
+    expect(
+      getLandingPreviewFromUserAgent(
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)",
+      ),
+    ).toBe("mobile");
   });
 });

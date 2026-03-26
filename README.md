@@ -83,6 +83,7 @@ Implemented now:
 - Light/dark theme system with CSS tokens
 - Typed mock data and server/client boundaries for future API replacement
 - Mock-backed auth session flow and settings persistence against a local JSON store
+- Live Aladhan integration for prayer timings, Hijri label, and Qibla bearing with automatic fallback to local data when the external API is unavailable
 - Utility modules for prayer formatting/countdown and qibla bearing calculations
 - Unit tests for utilities and render tests across feature slices
 
@@ -93,6 +94,17 @@ Still mocked or intentionally provisional:
 - Push/local notifications and reminder delivery
 - Real user database and production auth provider
 - Device sync across actual platforms
+
+## Runtime Environment
+
+Optional server env vars:
+
+- `EMARAT_CITY` (default: `Dubai`)
+- `EMARAT_COUNTRY` (default: `UAE`)
+- `EMARAT_PRAYER_METHOD` (default: `2`)
+- `EMARAT_LATITUDE` (default: `25.2048`)
+- `EMARAT_LONGITUDE` (default: `55.2708`)
+- `EMARAT_DATA_FILE` (override JSON data path)
 
 ## Next Backlog
 

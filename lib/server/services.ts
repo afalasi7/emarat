@@ -1,3 +1,8 @@
+import {
+  getLivePrayerSnapshot,
+  getLiveQiblaSnapshot,
+  getNextPrayerLabel,
+} from "@/lib/server/aladhan";
 import { mockQiblaBearingService } from "@/lib/qibla";
 import {
   reminderUpdateSchema,
@@ -15,10 +20,37 @@ import {
 import { readDatabase, updateDatabase } from "@/lib/server/database";
 
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7;
+const DEFAULT_ALADHAN_COUNTRY = "UAE";
+const DEFAULT_ALADHAN_METHOD = 2;
+const DEFAULT_ALADHAN_LATITUDE = 25.2048;
+const DEFAULT_ALADHAN_LONGITUDE = 55.2708;
 
 export async function getOverviewData() {
   const db = await readDatabase();
-  return db.overview;
+  const location = getPrayerLocation(db.qibla.city);
+  const liveSnapshot = await getLivePrayerSnapshot({
+    ...location,
+    fallbackPrayerTimes: db.prayerTimes,
+  });
+  if (!liveSnapshot) {
+    return db.overview;
+  }
+
+  const now = new Date();
+  const nextPrayerLabel = getNextPrayerLabel(liveSnapshot.prayerTimes, now);
+
+  return {
+    ...db.overview,
+    hijriDate: liveSnapshot.hijriLabel,
+    location: `${liveSnapshot.city}, ${liveSnapshot.country}`,
+    nextPrayerLabel,
+    upcoming: {
+      label: "Next prayer",
+      time:
+        liveSnapshot.prayerTimes.find((prayer) => prayer.status === "current")
+          ?.adhanTime ?? db.overview.upcoming.time,
+    },
+  };
 }
 
 export async function getDesktopOverviewData() {
@@ -28,19 +60,44 @@ export async function getDesktopOverviewData() {
 
 export async function getPrayerTimesData() {
   const db = await readDatabase();
+  const location = getPrayerLocation(db.qibla.city);
+  const liveSnapshot = await getLivePrayerSnapshot({
+    ...location,
+    fallbackPrayerTimes: db.prayerTimes,
+  });
+
+  const prayerTimes = liveSnapshot?.prayerTimes ?? db.prayerTimes;
+
   return {
-    prayerTimes: db.prayerTimes,
+    prayerTimes,
     settings: db.settings,
     reminders: db.reminders,
+    source: liveSnapshot ? "aladhan" : "local",
   };
 }
 
 export async function getQiblaData(deviceHeading = 245) {
   const db = await readDatabase();
-  const liveQibla = await mockQiblaBearingService.getQiblaData({ deviceHeading });
+  const coordinates = getQiblaCoordinates();
+  const liveQibla = await getLiveQiblaSnapshot({
+    deviceHeading,
+    latitude: coordinates.latitude,
+    longitude: coordinates.longitude,
+  });
+
+  if (liveQibla) {
+    return {
+      ...db.qibla,
+      ...liveQibla,
+    };
+  }
+
+  const fallbackQibla = await mockQiblaBearingService.getQiblaData({
+    deviceHeading,
+  });
   return {
     ...db.qibla,
-    ...liveQibla,
+    ...fallbackQibla,
   };
 }
 
@@ -232,4 +289,26 @@ async function persistSession(userId: string) {
   }));
 
   return sessionToken;
+}
+
+function getPrayerLocation(defaultCity: string) {
+  const city = process.env.EMARAT_CITY ?? defaultCity;
+  const country = process.env.EMARAT_COUNTRY ?? DEFAULT_ALADHAN_COUNTRY;
+  const parsedMethod = Number(process.env.EMARAT_PRAYER_METHOD ?? DEFAULT_ALADHAN_METHOD);
+
+  return {
+    city,
+    country,
+    method: Number.isFinite(parsedMethod) ? parsedMethod : DEFAULT_ALADHAN_METHOD,
+  };
+}
+
+function getQiblaCoordinates() {
+  const latitude = Number(process.env.EMARAT_LATITUDE ?? DEFAULT_ALADHAN_LATITUDE);
+  const longitude = Number(process.env.EMARAT_LONGITUDE ?? DEFAULT_ALADHAN_LONGITUDE);
+
+  return {
+    latitude: Number.isFinite(latitude) ? latitude : DEFAULT_ALADHAN_LATITUDE,
+    longitude: Number.isFinite(longitude) ? longitude : DEFAULT_ALADHAN_LONGITUDE,
+  };
 }

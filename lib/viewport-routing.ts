@@ -1,5 +1,4 @@
 const mobileToDesktopPathMap = {
-  "/": "/desktop",
   "/overview": "/desktop/overview",
   "/prayer-times": "/desktop/prayer-times",
   "/qibla": "/desktop/qibla",
@@ -8,14 +7,19 @@ const mobileToDesktopPathMap = {
   "/sign-up": "/desktop/sign-up",
 } as const;
 
-const desktopToMobilePathMap = Object.fromEntries(
-  Object.entries(mobileToDesktopPathMap).map(([mobilePath, desktopPath]) => [
-    desktopPath,
-    mobilePath,
-  ]),
-) as Record<string, string>;
+const desktopToMobilePathMap = {
+  "/desktop": "/",
+  ...Object.fromEntries(
+    Object.entries(mobileToDesktopPathMap).map(([mobilePath, desktopPath]) => [
+      desktopPath,
+      mobilePath,
+    ]),
+  ),
+} as Record<string, string>;
 
 const mobileDeviceTypes = new Set(["mobile", "tablet", "wearable"]);
+const mobileUserAgentPattern =
+  /android|iphone|ipad|ipod|mobile|tablet|silk|kindle|blackberry|opera mini|iemobile/i;
 
 export function getViewportRedirectPath(input: {
   deviceType?: string | undefined;
@@ -35,4 +39,12 @@ export function getViewportRedirectPath(input: {
   }
 
   return null;
+}
+
+export function getLandingPreviewFromUserAgent(userAgent: string | null | undefined) {
+  if (!userAgent) {
+    return "mobile" as const;
+  }
+
+  return mobileUserAgentPattern.test(userAgent) ? "mobile" : "desktop";
 }
