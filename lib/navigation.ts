@@ -12,5 +12,4 @@ export const desktopNavItems = [
   { href: "/desktop/prayer-times", label: "Prayer Times" },
   { href: "/desktop/qibla", label: "Qibla" },
   { href: "/desktop/settings", label: "Settings" },
-  { href: "/desktop/sign-in", label: "Sign In" },
 ] as const satisfies ReadonlyArray<{ href: Route; label: string }>;

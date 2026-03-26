@@ -46,6 +46,7 @@ export function SignUpScreen() {
       title="Create your account"
       subtitle="Start from landing, then continue into your prayer dashboard."
       showNav={false}
+      showModeToggle={false}
     >
       <AuthFormCard
         title="Sign Up"

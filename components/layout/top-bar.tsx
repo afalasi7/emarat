@@ -4,9 +4,17 @@ interface TopBarProps {
   title: string;
   meta?: string | undefined;
   subtitle?: string | undefined;
+  viewLabel?: string | undefined;
+  showModeToggle?: boolean;
 }
 
-export function TopBar({ title, meta, subtitle }: TopBarProps) {
+export function TopBar({
+  title,
+  meta,
+  subtitle,
+  viewLabel,
+  showModeToggle = true,
+}: TopBarProps) {
   return (
     <div className="flex items-start justify-between gap-4">
       <div className="space-y-1">
@@ -24,7 +32,14 @@ export function TopBar({ title, meta, subtitle }: TopBarProps) {
           <p className="text-muted-foreground text-sm">{subtitle}</p>
         ) : null}
       </div>
-      <ModeToggle />
+      <div className="flex items-center gap-2">
+        {viewLabel ? (
+          <span className="border-border bg-card text-muted-foreground rounded-full border px-3 py-1 text-[0.65rem] font-semibold tracking-[0.18em] uppercase">
+            {viewLabel}
+          </span>
+        ) : null}
+        {showModeToggle ? <ModeToggle /> : null}
+      </div>
     </div>
   );
 }

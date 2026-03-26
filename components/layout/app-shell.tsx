@@ -14,12 +14,14 @@ interface AppShellProps {
   meta?: string;
   subtitle?: string;
   showNav?: boolean;
+  showModeToggle?: boolean;
 }
 
 export function AppShell({
   children,
   meta,
   showNav = true,
+  showModeToggle = true,
   subtitle,
   title,
 }: AppShellProps) {
@@ -36,7 +38,13 @@ export function AppShell({
         >
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgb(255_255_255_/_0.18)_100%)] dark:bg-[linear-gradient(180deg,transparent_0%,rgb(255_255_255_/_0.03)_100%)]" />
           <div className="relative flex min-h-[640px] flex-col gap-5">
-            <TopBar title={title} meta={meta} subtitle={subtitle} />
+            <TopBar
+              title={title}
+              meta={meta}
+              subtitle={subtitle}
+              showModeToggle={showModeToggle}
+              viewLabel={showNav ? "Mobile view" : undefined}
+            />
             <div className="flex flex-1 flex-col gap-4">{children}</div>
             {showNav ? (
               <nav className="border-border/90 bg-card/85 grid grid-cols-4 gap-2 rounded-[22px] border p-2 backdrop-blur">

@@ -44,6 +44,8 @@ export function DesktopAuthScreen() {
     <DesktopShell
       title="Emarat account"
       subtitle="Secure account access for your prayer dashboard"
+      showModeToggle={false}
+      showNav={false}
     >
       <section className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
         <div className="rounded-[24px] bg-[linear-gradient(180deg,#111111_0%,#242424_100%)] p-7 text-white">

@@ -45,6 +45,7 @@ export function SignInScreen() {
       title="Welcome back"
       subtitle="Sign in to access your prayer dashboard."
       showNav={false}
+      showModeToggle={false}
     >
       <AuthFormCard
         title="Sign In"

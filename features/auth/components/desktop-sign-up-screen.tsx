@@ -43,6 +43,8 @@ export function DesktopSignUpScreen() {
     <DesktopShell
       title="Create your Emarat account"
       subtitle="Start from landing, then continue into the desktop experience"
+      showModeToggle={false}
+      showNav={false}
     >
       <section className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
         <div className="rounded-[28px] bg-[linear-gradient(180deg,#111111_0%,#262626_100%)] p-7 text-white">

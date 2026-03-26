@@ -12,9 +12,17 @@ interface DesktopShellProps {
   children: ReactNode;
   title: string;
   subtitle: string;
+  showNav?: boolean;
+  showModeToggle?: boolean;
 }
 
-export function DesktopShell({ children, subtitle, title }: DesktopShellProps) {
+export function DesktopShell({
+  children,
+  showModeToggle = true,
+  showNav = true,
+  subtitle,
+  title,
+}: DesktopShellProps) {
   const pathname = usePathname();
 
   return (
@@ -34,27 +42,34 @@ export function DesktopShell({ children, subtitle, title }: DesktopShellProps) {
               <p className="text-muted-foreground mt-1 text-sm">{subtitle}</p>
             </div>
             <div className="flex items-center gap-3">
-              <nav className="flex flex-wrap items-center gap-2">
-                {desktopNavItems.map((item) => {
-                  const active = pathname === item.href;
+              {showNav ? (
+                <>
+                  <span className="border-border bg-card text-muted-foreground rounded-full border px-3 py-1 text-[0.65rem] font-semibold tracking-[0.18em] uppercase">
+                    Desktop view
+                  </span>
+                  <nav className="flex flex-wrap items-center gap-2">
+                    {desktopNavItems.map((item) => {
+                      const active = pathname === item.href;
 
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={cn(
-                        "rounded-full px-4 py-2 text-sm font-medium transition",
-                        active
-                          ? "bg-foreground text-background"
-                          : "bg-card text-muted-foreground hover:text-foreground",
-                      )}
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                })}
-              </nav>
-              <ModeToggle />
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className={cn(
+                            "rounded-full px-4 py-2 text-sm font-medium transition",
+                            active
+                              ? "bg-foreground text-background"
+                              : "bg-card text-muted-foreground hover:text-foreground",
+                          )}
+                        >
+                          {item.label}
+                        </Link>
+                      );
+                    })}
+                  </nav>
+                </>
+              ) : null}
+              {showModeToggle ? <ModeToggle /> : null}
             </div>
           </header>
           {children}
