@@ -5,6 +5,11 @@ describe("viewport routing", () => {
   it("redirects desktop requests from mobile routes to desktop routes", () => {
     expect(
       getViewportRedirectPath({
+        pathname: "/",
+      }),
+    ).toBe("/desktop");
+    expect(
+      getViewportRedirectPath({
         pathname: "/overview",
       }),
     ).toBe("/desktop/overview");
@@ -14,6 +19,12 @@ describe("viewport routing", () => {
     expect(
       getViewportRedirectPath({
         deviceType: "mobile",
+        pathname: "/desktop",
+      }),
+    ).toBe("/");
+    expect(
+      getViewportRedirectPath({
+        deviceType: "tablet",
         pathname: "/desktop/overview",
       }),
     ).toBe("/overview");
@@ -28,9 +39,10 @@ describe("viewport routing", () => {
     ).toBeNull();
     expect(
       getViewportRedirectPath({
+        deviceType: "mobile",
         pathname: "/settings",
       }),
-    ).toBe("/desktop/settings");
+    ).toBeNull();
     expect(
       getViewportRedirectPath({
         pathname: "/desktop",
@@ -44,22 +56,6 @@ describe("viewport routing", () => {
     expect(
       getViewportRedirectPath({
         pathname: "/api/settings",
-      }),
-    ).toBeNull();
-  });
-
-  it("respects an explicit preview preference over device detection", () => {
-    expect(
-      getViewportRedirectPath({
-        deviceType: "mobile",
-        pathname: "/overview",
-        preferredPreview: "desktop",
-      }),
-    ).toBe("/desktop/overview");
-    expect(
-      getViewportRedirectPath({
-        pathname: "/",
-        preferredPreview: "mobile",
       }),
     ).toBeNull();
   });

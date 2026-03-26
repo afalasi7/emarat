@@ -22,7 +22,9 @@ export function LandingPage({ preview }: LandingPageProps) {
       >
         <div className={cn("grid gap-6", desktop && "lg:grid-cols-[1.15fr_0.85fr]")}>
           <div className="space-y-6">
-            <PreviewSwitch preview={preview} />
+            <div className="inline-flex rounded-full border border-border bg-secondary/70 px-4 py-2 text-sm font-medium">
+              {desktop ? "Desktop preview" : "Mobile preview"}
+            </div>
             <div className="space-y-4">
               <div className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
                 Emarat prayer companion
@@ -137,35 +139,6 @@ export function LandingPage({ preview }: LandingPageProps) {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function PreviewSwitch({ preview }: { preview: "mobile" | "desktop" }) {
-  return (
-    <div className="inline-flex rounded-full border border-border bg-secondary/70 p-1">
-      <Link
-        href="/?preview=mobile"
-        className={cn(
-          "rounded-full px-4 py-2 text-sm font-medium transition",
-          preview === "mobile"
-            ? "bg-primary text-primary-foreground shadow-[0_8px_18px_rgb(255_132_0_/_0.28)]"
-            : "text-muted-foreground hover:text-foreground",
-        )}
-      >
-        Mobile preview
-      </Link>
-      <Link
-        href="/desktop?preview=desktop"
-        className={cn(
-          "rounded-full px-4 py-2 text-sm font-medium transition",
-          preview === "desktop"
-            ? "bg-primary text-primary-foreground shadow-[0_8px_18px_rgb(255_132_0_/_0.28)]"
-            : "text-muted-foreground hover:text-foreground",
-        )}
-      >
-        Desktop preview
-      </Link>
     </div>
   );
 }
