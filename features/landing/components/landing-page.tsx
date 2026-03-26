@@ -5,9 +5,13 @@ import { cn } from "@/lib/utils";
 
 interface LandingPageProps {
   preview: "mobile" | "desktop";
+  nextPrayerLabel?: string;
 }
 
-export function LandingPage({ preview }: LandingPageProps) {
+export function LandingPage({
+  preview,
+  nextPrayerLabel = "Live prayer updates",
+}: LandingPageProps) {
   const desktop = preview === "desktop";
 
   return (
@@ -110,7 +114,7 @@ export function LandingPage({ preview }: LandingPageProps) {
               >
                 <PreviewPanel
                   eyebrow="Next prayer"
-                  title="Asr in 01:12"
+                  title={nextPrayerLabel}
                   description="Quiet reminders stay simple and consistent."
                 />
                 <PreviewPanel
