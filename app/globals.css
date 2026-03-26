@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f2f3f0;
+  --foreground: #111111;
+  --card: #ffffff;
+  --card-foreground: #111111;
+  --border: #cbccc9;
+  --muted: #e7e8e5;
+  --muted-foreground: #666666;
+  --accent: #f2f3f0;
+  --accent-foreground: #111111;
+  --secondary: #e7e8e5;
+  --secondary-foreground: #111111;
+  --primary: #ff8400;
+  --primary-foreground: #111111;
+  --input: #cbccc9;
+  --ring: #666666;
+  --color-info: #dfdfe6;
+  --color-info-foreground: #000066;
+  --color-success: #dfe6e1;
+  --color-success-foreground: #004d1a;
+  --color-warning: #e9e3d8;
+  --color-warning-foreground: #804200;
+  --color-error: #e5dcda;
+  --color-error-foreground: #8c1c00;
+  --popover: #ffffff;
+  --popover-foreground: #111111;
+  --font-primary: "JetBrains Mono Variable";
+  --font-secondary: "Geist Variable";
+  --shadow-soft: 0 16px 40px rgb(17 17 17 / 0.1);
+  --shadow-card: 0 10px 26px rgb(17 17 17 / 0.08);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-secondary);
+  --font-mono: var(--font-primary);
+}
+
+.dark {
+  --background: #111111;
+  --foreground: #ffffff;
+  --card: #1a1a1a;
+  --card-foreground: #ffffff;
+  --border: #2e2e2e;
+  --muted: #2e2e2e;
+  --muted-foreground: #b8b9b6;
+  --accent: #111111;
+  --accent-foreground: #f2f3f0;
+  --secondary: #2e2e2e;
+  --secondary-foreground: #ffffff;
+  --input: #2e2e2e;
+  --color-info: #222229;
+  --color-info-foreground: #b2b2ff;
+  --color-success: #222924;
+  --color-success-foreground: #b6ffce;
+  --color-warning: #291c0f;
+  --color-warning-foreground: #ff8400;
+  --color-error: #24100b;
+  --color-error-foreground: #ff5c33;
+  --popover: #1a1a1a;
+  --popover-foreground: #ffffff;
+  --shadow-soft: 0 18px 44px rgb(0 0 0 / 0.42);
+  --shadow-card: 0 12px 30px rgb(0 0 0 / 0.32);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html,
+body {
+  min-height: 100%;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-secondary), sans-serif;
+}
+
+body {
+  background-image:
+    radial-gradient(circle at top, rgb(255 132 0 / 0.08), transparent 35%),
+    radial-gradient(
+      circle at bottom right,
+      rgb(178 178 255 / 0.08),
+      transparent 28%
+    );
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.font-display {
+  font-family: var(--font-primary), monospace;
+}
+
+.surface-frame {
+  background: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 0.9),
+    rgb(242 243 240 / 0.96)
+  );
+  box-shadow: var(--shadow-soft);
+}
+
+.dark .surface-frame {
+  background: linear-gradient(
+    180deg,
+    rgb(17 17 17 / 0.96),
+    rgb(10 10 10 / 0.98)
+  );
+}
+
+.surface-card {
+  box-shadow: var(--shadow-card);
+}
